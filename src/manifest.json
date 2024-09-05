@@ -10,7 +10,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://campus.uax.es/portal/central/principal.php?cod_apl_acl=1005"],
+      "matches": ["*://campus.uax.es/central/"],
       "js": ["main.js"]
     }
   ]
