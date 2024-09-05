@@ -5,7 +5,7 @@
   "version": "2024.9.0",
 
   "icons": {
-    "48": "icons/favicon.ico"
+    "48": "icons/uax.svg"
   },
 
   "content_scripts": [
