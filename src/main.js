@@ -1,7 +1,6 @@
 'use strict';
 
 const MOODLE_APP_SRC = 'app/1005'
-let moodleFrame = null
 
 function monitorIframe() {
   let contentWrapper = document.getElementsByClassName('content-wrapper')
@@ -13,16 +12,12 @@ function monitorIframe() {
     mutations.forEach(function (mutation) {
       let iframe = mutation.target.getElementsByTagName('iframe')
       if (!iframe || iframe.length === 0) {
-        moodleFrame = null
         return
       }
 
       if (iframe[0].src.endsWith(MOODLE_APP_SRC)) {
         console.log('Moodle activado !')
-        moodleFrame = iframe[0]
-        iframe[0].addEventListener('load', onMoodleEnabled)
-      } else {
-        moodleFrame = null
+        iframe[0].addEventListener('load', () => onMoodleEnabled(iframe[0]))
       }
     })
   })
@@ -34,7 +29,7 @@ function monitorIframe() {
   observer.observe(contentWrapper[0], config)
 }
 
-function onMoodleEnabled() {
+function onMoodleEnabled(moodleFrame) {
   if (!moodleFrame) {
     return
   }
@@ -43,20 +38,19 @@ function onMoodleEnabled() {
     if (moodleFrame.contentDocument.getElementsByTagName('md-card').length > 0) {
       clearInterval(checkIfLoadedInterval)
 
-      moodleFrame = moodleFrame.contentDocument
-      onMoodleLoaded()
+      onMoodleLoaded(moodleFrame.contentDocument)
     }
   },100)
 }
 
-function onMoodleLoaded() {
-  hideJEcards()
-  hideEQcards()
+function onMoodleLoaded(moodleDocument) {
+  hideJEcards(moodleDocument)
+  hideEQcards(moodleDocument)
 }
 
 // Ocultar tarjetas de jefatura de estudios
-function hideJEcards() {
-  let je = moodleFrame.getElementsByClassName('card_asig_je')
+function hideJEcards(moodleDocument) {
+  let je = moodleDocument.getElementsByClassName('card_asig_je')
   for (let i = 0; i < je.length; i++) {
     je[i].style.display = 'none'
   }
@@ -64,8 +58,8 @@ function hideJEcards() {
 }
 
 // Ocultar tarjetas de cursos equivalentes (duplicados)
-function hideEQcards() {
-  let asig = moodleFrame.getElementsByClassName('card_asig')
+function hideEQcards(moodleDocument) {
+  let asig = moodleDocument.getElementsByClassName('card_asig')
 
   for (let i = 0; i < asig.length; i++) {
     // Cada tarjeta contiene un elemento con el código del curso y un hijo con un enlace al curso equivalente o a sí misma
@@ -83,6 +77,5 @@ function hideEQcards() {
     }
   }
 }
-
 
 monitorIframe()
