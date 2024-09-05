@@ -1,5 +1,6 @@
 'use strict';
 
+const MOODLE_APP_SRC = 'app/1005'
 let moodleFrame = null
 
 function monitorIframe() {
@@ -16,7 +17,7 @@ function monitorIframe() {
         return
       }
 
-      if (iframe[0].src.endsWith('app/1005')) {
+      if (iframe[0].src.endsWith(MOODLE_APP_SRC)) {
         console.log('Moodle activado !')
         moodleFrame = iframe[0]
         iframe[0].addEventListener('load', onMoodleEnabled)
