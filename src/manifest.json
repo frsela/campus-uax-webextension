@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "uax-campus",
   "description": "Campus UAX webextension",
-  "version": "0.1",
+  "version": "2024.9.0",
 
   "icons": {
     "48": "icons/favicon.ico"
