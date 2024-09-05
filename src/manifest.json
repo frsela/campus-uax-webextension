@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "uax-campus",
+  "description": "Campus UAX webextension",
+  "version": "0.1",
+
+  "icons": {
+    "48": "icons/favicon.ico"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://campus.uax.es/portal/central/principal.php?cod_apl_acl=1005"],
+      "js": ["main.js"]
+    }
+  ]
+}
