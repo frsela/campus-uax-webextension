@@ -46,6 +46,7 @@ function onMoodleEnabled(moodleFrame) {
 function onMoodleLoaded(moodleDocument) {
   hideJEcards(moodleDocument)
   hideEQcards(moodleDocument)
+  hidePerPeriodcards(moodleDocument, '2C')
 }
 
 // Ocultar tarjetas de jefatura de estudios
@@ -73,6 +74,28 @@ function hideEQcards(moodleDocument) {
 
     if (!eqCourseCode.startsWith(thisCourseCode.textContent.match(/\(([^)]+)\)/)[1])) {
       console.log('Ocultada asignatura duplicada: ' + thisCourseCode.textContent + ' que está cubierta en ' + eqCourseCode)
+      asig[i].style.display = 'none'
+    }
+  }
+}
+
+// Ocultar tarjetas de curso en base al periodo
+// 1C: primer cuatrimestre
+// 2C: segundo cuatrimestre
+// AN: anual
+function hidePerPeriodcards(moodleDocument, period) {
+  let asig = moodleDocument.getElementsByClassName('card_asig')
+
+  for (let i = 0; i < asig.length; i++) {
+    // Cada tarjeta contiene un elemento con el código del curso y un hijo con un enlace al curso equivalente o a sí misma
+    let periodo = asig[i].getElementsByClassName('codperiodo')
+    if (!periodo || periodo.length === 0) {
+      continue
+    }
+
+    let thisCoursePeriod = periodo[0].textContent
+    if (thisCoursePeriod.endsWith(period)) {
+      console.log('Ocultada asignatura del periodo: ' + period)
       asig[i].style.display = 'none'
     }
   }
